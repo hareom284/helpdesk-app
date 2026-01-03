@@ -1,88 +1,90 @@
 # 🖥️ IT CORE: Help Desk Management System
 
-**Apple's Glass UI** ဒီဇိုင်းဖြင့် ဖန်တီးထားသော ခေတ်မီ နည်းပညာအကူအညီပေးရေး စနစ်။
+A modern IT help desk management system built with **Apple's Glass UI** design philosophy.
+
+This read in Burmese language: [READMEmm.md](./READMEmm.md)
 
 <img width="1470" height="922" alt="Screenshot 2569-01-03 at 17 01 14" src="https://github.com/user-attachments/assets/84209f28-802b-487d-ac21-d73130aa0376" />
 
 ---
 
-### 📝 အကျဉ်းချုပ် (Overview)
+### 📝 Overview
 
-**IT CORE** သည် ကုမ္ပဏီများ၊ ကျောင်းများနှင့် အဖွဲ့အစည်းများရှိ IT ပြဿနာများကို စနစ်တကျ စီမံခန့်ခွဲနိုင်ရန် ဖန်တီးထားပါသည်။ Apple ၏ **Glassmorphism** ဒီဇိုင်းကို အသုံးပြုထားသဖြင့် မြင်ရသည်မှာ လှပရုံသာမက အသုံးပြုရသည်မှာလည်း အလွန်ရိုးရှင်းပါသည်။
+**IT CORE** is designed to systematically manage IT issues for companies, schools, and organizations. Using Apple's **Glassmorphism** design, it's not only beautiful but also incredibly intuitive to use.
 
 ---
 
-### ⚙️ စနစ်ထည့်သွင်းနည်း (Setup Guide)
+### ⚙️ Setup Guide
 
-စနစ်ကို စတင်အသုံးပြုရန် အောက်ပါအဆင့်များအတိုင်း ဆောင်ရွက်ပါ-
+Follow these steps to get started with the system:
 
-#### ၁။ လိုအပ်ချက်များ
+#### 1. Requirements
 
-* **Node.js:** Version 20 နှင့်အထက်
+* **Node.js:** Version 20 or higher
 * **Database:** MySQL
 * **Package Manager:** npm
 
-#### ၂။ တင်သွင်းပုံအဆင့်ဆင့်
+#### 2. Installation Steps
 
-| အဆင့် | လုပ်ဆောင်ချက် | Command |
+| Step | Action | Command |
 | --- | --- | --- |
-| **Step 1** | လိုအပ်သော Library များသွင်းရန် | `npm install` |
-| **Step 2** | Database ချိတ်ဆက်ရန် | `.env` ဖိုင်တွင် Database URL ထည့်ပါ |
-| **Step 3** | Database Setup လုပ်ရန် | `npm run prisma:generate` (and push/seed) |
-| **Step 4** | စနစ်စတင်ပတ်ရန် | `npm run dev` |
+| **Step 1** | Install dependencies | `npm install` |
+| **Step 2** | Configure database connection | Add Database URL in `.env` file |
+| **Step 3** | Setup database | `npm run prisma:generate` (and push/seed) |
+| **Step 4** | Start the system | `npm run dev` |
 
-> 💡 **စမ်းသပ်အသုံးပြုရန်:**
+> 💡 **For Testing:**
 > * **URL:** `http://localhost:3000`
-> * **Admin:** `admin@manzaneque.com` | **Pass:** `password123`
-> 
-> 
+> * **Admin:** `admin@manzaneque.com` | **Password:** `password123`
+>
+>
 
 ---
 
-### 👥 အသုံးပြုသူ အမျိုးအစားများ (User Roles)
+### 👥 User Roles
 
-1. **Admin (စီမံခန့်ခွဲသူ):**
-* စနစ်တစ်ခုလုံးကို ထိန်းချုပ်ခြင်း။
-* အသုံးပြုသူများနှင့် Permissions များ စီမံခြင်း။
-
-
-2. **Operator (အကူအညီလက်ခံသူ):**
-* ပြဿနာများကို မှတ်တမ်းတင်ပြီး ကျွမ်းကျင်သူများထံ ခွဲဝေပေးခြင်း။
+1. **Admin:**
+* Full system control
+* Manage users and permissions
 
 
-3. **Specialist (နည်းပညာကျွမ်းကျင်သူ):**
-* သတ်မှတ်ပေးထားသော နည်းပညာပြဿနာများကို ဖြေရှင်းပေးခြင်း။
+2. **Operator:**
+* Log issues and assign them to specialists
 
 
-4. **End User (အသုံးပြုသူ):**
-* ပြဿနာတိုင်ကြားခြင်းနှင့် အခြေအနေကို ပြန်လည်ကြည့်ရှုခြင်း။
+3. **Specialist:**
+* Resolve assigned technical problems
 
 
+4. **End User:**
+* Report issues and track their status
 
----
 
-### ✨ အဓိက လုပ်ဆောင်ချက်များ (Key Features)
-
-#### 🛠 ပြဿနာစီမံခန့်ခွဲမှု (Ticket Management)
-
-* **ဦးစားပေးသတ်မှတ်ခြင်း:** Low, Medium, High, Urgent။
-* **အခြေအနေပြသခြင်း:** Open → Assigned → In Progress → Resolved → Closed။
-* **ခြေရာခံခြင်း:** Ticket ID ဖြင့် အလွယ်တကူ ရှာဖွေနိုင်ခြင်း။
-
-#### 📦 ပစ္စည်းစီမံခန့်ခွဲမှု (Asset Management)
-
-* စက်ပစ္စည်းများကို **Serial Number** များဖြင့် မှတ်တမ်းတင်ခြင်း။
-* Software License များ သက်တမ်းကုန်ဆုံးမှုကို စီမံခြင်း။
-
-#### 📊 အခြားဝန်ဆောင်မှုများ
-
-* **Real-time Dashboard:** လက်ရှိအခြေအနေများကို တိုက်ရိုက်ကြည့်ရှုခြင်း။
-* **SLA Tracking:** သတ်မှတ်ချိန်အတွင်း ဖြေရှင်းနိုင်ရန် သတိပေးခြင်း။
-* **File Attachment:** ပြဿနာဖြစ်သည့်ပုံ (Screenshots) များ တွဲတင်နိုင်ခြင်း။
 
 ---
 
-### 🚀 အသုံးပြုထားသော နည်းပညာများ (Tech Stack)
+### ✨ Key Features
+
+#### 🛠 Ticket Management
+
+* **Priority Levels:** Low, Medium, High, Urgent
+* **Status Tracking:** Open → Assigned → In Progress → Resolved → Closed
+* **Easy Search:** Find tickets quickly by Ticket ID
+
+#### 📦 Asset Management
+
+* Track equipment with **Serial Numbers**
+* Manage software license expiration dates
+
+#### 📊 Additional Services
+
+* **Real-time Dashboard:** Monitor current status in real-time
+* **SLA Tracking:** Alerts to ensure resolution within deadlines
+* **File Attachments:** Attach screenshots and relevant files to issues
+
+---
+
+### 🚀 Tech Stack
 
 * **Frontend:** Next.js 14, React, Tailwind CSS
 * **Backend:** Prisma ORM, MySQL
@@ -91,13 +93,18 @@
 
 ---
 
-### 💻 အသုံးဝင်သော Command များ
+### 💻 Useful Commands
 
-* `npm run dev` - စနစ်ကို Development Mode ဖြင့် ဖွင့်ရန်။
-* `npm run build` - အသုံးပြုရန်အဆင့်သင့် Build လုပ်ရန်။
-* `npm run prisma:studio` - Database အတွင်းရှိ ဒေတာများကို GUI ဖြင့် ကြည့်ရန်။
+* `npm run dev` - Run the system in Development Mode
+* `npm run build` - Build for production
+* `npm run prisma:studio` - View database data with GUI
 
 ---
 
-**မှတ်ချက်:** ဤစနစ်သည် လုပ်ငန်းခွင်အတွင်း IT Support ပေးရသည့် လုပ်ငန်းစဉ်များကို ပိုမိုမြန်ဆန်ပြီး စနစ်ကျစေရန် အထူးရည်ရွယ်ပါသည်။
+### 🌏 Language Support
 
+This README is also available in Burmese: [READMEmm.md](./READMEmm.md)
+
+---
+
+**Note:** This system is specifically designed to make IT support workflows faster and more systematic in workplace environments.

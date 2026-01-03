@@ -88,11 +88,11 @@ export async function createProblem(formData: FormData): Promise<CreateProblemRe
     await prisma.problemStatusHistory.create({
       data: {
         problemId: problem.id,
-        fromStatus: null,
-        toStatus: "open",
+        oldStatus: null,
+        newStatus: "open",
         changedAt: now,
-        changedById: reporterId,
-        reason: "Problem reported",
+        changedBy: reporterId,
+        changeReason: "Problem reported",
       },
     })
 
@@ -154,11 +154,11 @@ export async function updateProblemStatus(
     await prisma.problemStatusHistory.create({
       data: {
         problemId,
-        fromStatus: problem.status,
-        toStatus: newStatus,
+        oldStatus: problem.status,
+        newStatus: newStatus as any,
         changedAt: new Date(),
-        changedById: userId,
-        reason: reason || `Status changed to ${newStatus}`,
+        changedBy: userId,
+        changeReason: reason || `Status changed to ${newStatus}`,
       },
     })
 
@@ -206,11 +206,11 @@ export async function assignProblem(
     await prisma.problemStatusHistory.create({
       data: {
         problemId,
-        fromStatus: "open",
-        toStatus: "assigned",
+        oldStatus: "open",
+        newStatus: "assigned",
         changedAt: new Date(),
-        changedById: userId,
-        reason: `Assigned to specialist`,
+        changedBy: userId,
+        changeReason: `Assigned to specialist`,
       },
     })
 
