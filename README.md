@@ -1,7 +1,3 @@
-ယခုပေးထားသော **IT CORE: Help Desk Management System** အကြောင်းအရာကို ပိုမိုဖတ်ရှုရလွယ်ကူပြီး ရှင်းလင်းပြတ်သားသော ပုံစံ (Clean & Professional Format) ဖြင့် ပြန်လည်ပြင်ဆင်ပေးထားပါသည်။
-
----
-
 # 🖥️ IT CORE: Help Desk Management System
 
 **Apple's Glass UI** ဒီဇိုင်းဖြင့် ဖန်တီးထားသော ခေတ်မီ နည်းပညာအကူအညီပေးရေး စနစ်။
