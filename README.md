@@ -1,4 +1,4 @@
-# helpdesk-app
+# Help Desk Managment System using Apple's Glass UI 
 
 
 
