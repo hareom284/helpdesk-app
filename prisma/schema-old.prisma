@@ -1,0 +1,284 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Department Model
+model Department {
+  id        Int      @id @default(autoincrement()) @map("department_id")
+  name      String   @unique @map("department_name") @db.VarChar(100)
+  location  String?  @map("department_location") @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  staff Staff[]
+
+  @@map("departments")
+}
+
+// Staff Model
+model Staff {
+  id           Int       @id @default(autoincrement()) @map("staff_id")
+  firstName    String    @map("first_name") @db.VarChar(50)
+  lastName     String    @map("last_name") @db.VarChar(50)
+  email        String?   @unique @db.VarChar(100)
+  phone        String?   @db.VarChar(20)
+  jobTitle     String    @map("job_title") @db.VarChar(100)
+  departmentId Int?      @map("department_id")
+  staffType    StaffType @map("staff_type")
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  department Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+
+  equipmentAssignments Equipment[]
+  problemsAsCaller     Problem[]           @relation("ProblemCaller")
+  problemsAsOperator   Problem[]           @relation("ProblemOperator")
+  problemsAsSpecialist Problem[]           @relation("ProblemSpecialist")
+  callsAsCaller        Call[]              @relation("CallCaller")
+  callsAsOperator      Call[]              @relation("CallOperator")
+  resolutions          Resolution[]
+  specialistExpertise  SpecialistExpertise[]
+
+  @@map("staff")
+}
+
+enum StaffType {
+  caller
+  operator
+  specialist
+}
+
+// Equipment Model
+model Equipment {
+  id                 Int              @id @default(autoincrement()) @map("equipment_id")
+  serialNumber       String           @unique @map("serial_number") @db.VarChar(100)
+  equipmentType      String           @map("equipment_type") @db.VarChar(50)
+  equipmentMake      String           @map("equipment_make") @db.VarChar(50)
+  equipmentModel     String?          @map("equipment_model") @db.VarChar(100)
+  purchaseDate       DateTime?        @map("purchase_date") @db.Date
+  warrantyExpiry     DateTime?        @map("warranty_expiry") @db.Date
+  assignedToStaffId  Int?             @map("assigned_to_staff_id")
+  status             EquipmentStatus  @default(active)
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+
+  assignedToStaff    Staff?           @relation(fields: [assignedToStaffId], references: [id], onDelete: SetNull)
+
+  equipmentSoftware  EquipmentSoftware[]
+  problems           Problem[]
+
+  @@map("equipment")
+}
+
+enum EquipmentStatus {
+  active
+  retired
+  repair
+}
+
+// Operating System Model
+model OperatingSystem {
+  id          Int      @id @default(autoincrement()) @map("os_id")
+  name        String   @map("os_name") @db.VarChar(100)
+  version     String   @map("os_version") @db.VarChar(50)
+  vendor      String?  @map("os_vendor") @db.VarChar(50)
+  isSupported Boolean  @default(true) @map("is_supported")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  equipmentSoftware EquipmentSoftware[]
+
+  @@unique([name, version], name: "unique_os")
+  @@map("operating_systems")
+}
+
+// Software Model
+model Software {
+  id               Int      @id @default(autoincrement()) @map("software_id")
+  name             String   @map("software_name") @db.VarChar(100)
+  version          String   @map("software_version") @db.VarChar(50)
+  vendor           String?  @map("software_vendor") @db.VarChar(100)
+  category         String?  @map("software_category") @db.VarChar(50)
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  licenses          License[]
+  equipmentSoftware EquipmentSoftware[]
+
+  @@unique([name, version], name: "unique_software")
+  @@map("software")
+}
+
+// License Model
+model License {
+  id           Int          @id @default(autoincrement()) @map("license_id")
+  softwareId   Int          @map("software_id")
+  licenseKey   String?      @unique @map("license_key") @db.VarChar(255)
+  purchaseDate DateTime?    @map("purchase_date") @db.Date
+  expiryDate   DateTime?    @map("expiry_date") @db.Date
+  licenseType  LicenseType  @map("license_type")
+  maxUsers     Int          @default(1) @map("max_users")
+  isValid      Boolean      @default(true) @map("is_valid")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  software          Software           @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+  equipmentSoftware EquipmentSoftware[]
+
+  @@map("licenses")
+}
+
+enum LicenseType {
+  perpetual
+  subscription
+  trial
+}
+
+// Equipment Software Junction Table
+model EquipmentSoftware {
+  id               Int       @id @default(autoincrement()) @map("equipment_software_id")
+  equipmentId      Int       @map("equipment_id")
+  softwareId       Int?      @map("software_id")
+  osId             Int?      @map("os_id")
+  licenseId        Int?      @map("license_id")
+  installationDate DateTime? @map("installation_date") @db.Date
+  createdAt        DateTime  @default(now()) @map("created_at")
+
+  equipment Equipment        @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  software  Software?        @relation(fields: [softwareId], references: [id], onDelete: Cascade)
+  os        OperatingSystem? @relation(fields: [osId], references: [id], onDelete: SetNull)
+  license   License?         @relation(fields: [licenseId], references: [id], onDelete: SetNull)
+
+  @@map("equipment_software")
+}
+
+// Problem Type Model (Hierarchical)
+model ProblemType {
+  id                  Int      @id @default(autoincrement()) @map("problem_type_id")
+  name                String   @unique @map("problem_type_name") @db.VarChar(100)
+  description         String?  @map("problem_description") @db.Text
+  parentProblemTypeId Int?     @map("parent_problem_type_id")
+  isActive            Boolean  @default(true) @map("is_active")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  parentProblemType   ProblemType?          @relation("ProblemTypeHierarchy", fields: [parentProblemTypeId], references: [id], onDelete: SetNull)
+  childProblemTypes   ProblemType[]         @relation("ProblemTypeHierarchy")
+
+  problems            Problem[]
+  specialistExpertise SpecialistExpertise[]
+
+  @@map("problem_types")
+}
+
+// Specialist Expertise Junction Table
+model SpecialistExpertise {
+  id             Int            @id @default(autoincrement()) @map("specialist_expertise_id")
+  specialistId   Int            @map("specialist_id")
+  problemTypeId  Int            @map("problem_type_id")
+  expertiseLevel ExpertiseLevel @default(intermediate) @map("expertise_level")
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  specialist  Staff       @relation(fields: [specialistId], references: [id], onDelete: Cascade)
+  problemType ProblemType @relation(fields: [problemTypeId], references: [id], onDelete: Cascade)
+
+  @@unique([specialistId, problemTypeId], name: "unique_specialist_expertise")
+  @@map("specialist_expertise")
+}
+
+enum ExpertiseLevel {
+  beginner
+  intermediate
+  expert
+}
+
+// Problem Model
+model Problem {
+  id                   Int           @id @default(autoincrement()) @map("problem_id")
+  problemNumber        String        @unique @map("problem_number") @db.VarChar(50)
+  callerId             Int           @map("caller_id")
+  equipmentId          Int?          @map("equipment_id")
+  problemTypeId        Int?          @map("problem_type_id")
+  initialOperatorId    Int?          @map("initial_operator_id")
+  assignedSpecialistId Int?          @map("assigned_specialist_id")
+  priority             Priority      @default(medium)
+  status               ProblemStatus @default(open)
+  createdAt            DateTime      @default(now()) @map("created_at")
+  updatedAt            DateTime      @updatedAt @map("updated_at")
+
+  caller             Staff        @relation("ProblemCaller", fields: [callerId], references: [id], onDelete: Restrict)
+  equipment          Equipment?   @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+  problemType        ProblemType? @relation(fields: [problemTypeId], references: [id], onDelete: SetNull)
+  initialOperator    Staff?       @relation("ProblemOperator", fields: [initialOperatorId], references: [id], onDelete: SetNull)
+  assignedSpecialist Staff?       @relation("ProblemSpecialist", fields: [assignedSpecialistId], references: [id], onDelete: SetNull)
+
+  calls      Call[]
+  resolution Resolution?
+
+  @@map("problems")
+}
+
+enum Priority {
+  low
+  medium
+  high
+  critical
+}
+
+enum ProblemStatus {
+  open
+  assigned
+  in_progress
+  resolved
+  closed
+}
+
+// Call Model
+model Call {
+  id               Int      @id @default(autoincrement()) @map("call_id")
+  problemId        Int      @map("problem_id")
+  callerId         Int      @map("caller_id")
+  operatorId       Int      @map("operator_id")
+  callDatetime     DateTime @default(now()) @map("call_datetime")
+  callType         CallType @map("call_type")
+  callNotes        String   @map("call_notes") @db.Text
+  callDescription  String?  @map("call_description") @db.Text
+  callDurationMins Int?     @map("call_duration_minutes")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  problem  Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  caller   Staff   @relation("CallCaller", fields: [callerId], references: [id], onDelete: Restrict)
+  operator Staff   @relation("CallOperator", fields: [operatorId], references: [id], onDelete: Restrict)
+
+  @@map("calls")
+}
+
+enum CallType {
+  initial
+  follow_up
+}
+
+// Resolution Model
+model Resolution {
+  id                    Int      @id @default(autoincrement()) @map("resolution_id")
+  problemId             Int      @unique @map("problem_id")
+  resolvedByStaffId     Int      @map("resolved_by_staff_id")
+  resolutionDatetime    DateTime @map("resolution_datetime")
+  resolutionDescription String   @map("resolution_description") @db.Text
+  resolutionNotes       String?  @map("resolution_notes") @db.Text
+  timeTakenHours        Decimal? @map("time_taken_hours") @db.Decimal(10, 2)
+  wasSuccessful         Boolean  @default(true) @map("was_successful")
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  problem        Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  resolvedByStaff Staff  @relation(fields: [resolvedByStaffId], references: [id], onDelete: Restrict)
+
+  @@map("resolutions")
+}
