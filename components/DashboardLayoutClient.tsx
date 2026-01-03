@@ -97,7 +97,7 @@ export default function DashboardLayoutClient({ children, session }: DashboardLa
     : user.email?.[0].toUpperCase()
 
   return (
-    <div className="min-h-screen relative overflow-hidden font-sans text-white bg-[#020617] selection:bg-blue-500 selection:text-white">
+    <div className="h-screen relative overflow-hidden font-sans text-white bg-[#020617] selection:bg-blue-500 selection:text-white">
       {/* Background blobs */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-blue-600/20 rounded-full blur-[160px] animate-pulse"></div>
@@ -107,9 +107,9 @@ export default function DashboardLayoutClient({ children, session }: DashboardLa
         ></div>
       </div>
 
-      <div className="flex min-h-screen">
+      <div className="flex h-screen">
         {/* Sidebar - Desktop */}
-        <aside className="w-72 p-6 flex-col hidden lg:flex sticky top-0 h-screen">
+        <aside className="w-72 p-6 flex-col hidden lg:flex fixed left-0 top-0 h-screen z-30">
           <div className={`${appleGlass} flex-1 rounded-[36px] p-8 flex flex-col`}>
             <div
               className="flex items-center gap-3 mb-14 cursor-pointer"
@@ -223,9 +223,9 @@ export default function DashboardLayoutClient({ children, session }: DashboardLa
         )}
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col p-6 lg:pl-0">
+        <main className="flex-1 flex flex-col h-screen lg:ml-72">
           <header
-            className={`${appleGlass} h-20 rounded-[28px] px-8 flex items-center justify-between mb-6`}
+            className={`${appleGlass} h-20 rounded-[28px] px-8 flex items-center justify-between m-6 mb-0 fixed top-0 right-6 left-6 lg:left-[312px] z-20`}
           >
             <div className="flex-1 lg:ml-0 ml-16">
               <h2 className="text-lg font-black tracking-tight uppercase">
@@ -254,7 +254,7 @@ export default function DashboardLayoutClient({ children, session }: DashboardLa
             </div>
           </header>
 
-          <section className="flex-1">{children}</section>
+          <section className="flex-1 overflow-y-auto p-6 mt-20">{children}</section>
         </main>
       </div>
     </div>
