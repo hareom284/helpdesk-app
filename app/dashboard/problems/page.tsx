@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client"
-import { Filter, Search, ChevronRight, AlertCircle, Clock, CheckCircle2 } from "lucide-react"
+import { Filter, Search, ChevronRight, AlertCircle, Clock, CheckCircle2, Plus } from "lucide-react"
 import Link from "next/link"
 
 const prisma = new PrismaClient()
@@ -70,6 +70,20 @@ export default async function ProblemsPage() {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-700">
+      {/* Header with New Problem Button */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-4xl font-black text-white mb-2">Problems</h1>
+          <p className="text-white/40 text-sm">Manage and track all reported problems</p>
+        </div>
+        <Link
+          href="/dashboard/problems/new"
+          className="px-6 py-3 bg-blue-500 text-white rounded-2xl text-sm font-black uppercase tracking-widest shadow-xl hover:bg-blue-600 transition-all flex items-center gap-2"
+        >
+          <Plus size={18} /> New Problem
+        </Link>
+      </div>
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <div className={`${appleGlass} p-5 rounded-3xl`}>

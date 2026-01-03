@@ -150,7 +150,7 @@ export default function LoginPage() {
           {/* Footer */}
           <div className="text-center">
             <p className="text-[10px] text-white/20 uppercase tracking-[0.3em] font-black">
-              IT Helpdesk System &copy; 2024
+              IT Helpdesk System &copy; 2026
             </p>
           </div>
         </div>
